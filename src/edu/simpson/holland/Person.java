@@ -1,5 +1,7 @@
 package edu.simpson.holland;
 
+import java.util.Date;
+
 /**
  * Created by Cole on 1/31/2017.
  */
@@ -10,7 +12,7 @@ public class Person
     private String last;
     private String phone;
     private String email;
-    private String birthday;
+    private Date birthday;
 
     public int getId() {return id; }
     public void setId(int id) { this.id = id; }
@@ -27,6 +29,6 @@ public class Person
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
 
-    public String geBirthday() {return birthday;}
-    public void setBirthday(String birthday) {this.birthday = birthday;}
+    public Date geBirthday() {return birthday;}
+    public void setBirthday(Date birthday) {this.birthday = birthday;}
 }
