@@ -99,6 +99,8 @@ function validate()
     var f5 = $('#birthday').val();
     var birthday = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/;
 
+    var validForm = true;
+
     if (firstName.test(f1))
     {
         $('#firstNameDiv').removeClass("has-error");
@@ -107,6 +109,7 @@ function validate()
         $('#firstNameGlyph').addClass("glyphicon-ok");
         $('#firstNameStatus').val("(success)");
         console.log("First name good.");
+
     }
 
     else
@@ -117,6 +120,7 @@ function validate()
         $('#firstNameGlyph').addClass("glyphicon-remove");
         $('#firstNameStatus').val("(fail)");
         console.log("First name bad");
+        validForm = false;
     }
 
     if (lastName.test(f2))
@@ -136,7 +140,8 @@ function validate()
         $('#lastNameGlyph').removeClass("glyphicon-ok");
         $('#lastNameGlyph').addClass("glyphicon-remove");
         $('#lastNameStatus').val("(fail)");
-        console.log("Last name bad")
+        console.log("Last name bad");
+        validForm = false;
     }
 
     if (phone.test(f3))
@@ -157,6 +162,7 @@ function validate()
         $('#phoneGlyph').addClass("glyphicon-remove");
         $('#phoneStatus').val("(fail)");
         console.log("Phone bad");
+        validForm = false;
     }
 
     if (email.test(f4))
@@ -165,6 +171,7 @@ function validate()
         $('#emailDiv').addClass("has-success");
         $('#emailGlyph').removeClass("glyphicon-remove");
         $('#emailGlyph').addClass("glyphicon-ok");
+        $('#emailStatus').val("(success");
         console.log("Email good");
     }
 
@@ -176,6 +183,7 @@ function validate()
         $('#emailGlyph').addClass("glyphicon-remove");
         $('#emailStatus').val("(fail)");
         console.log("Email bad");
+        validForm = false;
     }
 
     if (birthday.test(f5))
@@ -184,6 +192,7 @@ function validate()
         $('#birthdayDiv').addClass("has-success");
         $('#birthdayGlyph').removeClass("glyphicon-remove");
         $('#birthdayGlyph').addClass("glyphicon-ok");
+        $('#birthdayStatus').val("(success)");
         console.log("Birthdate good");
     }
 
@@ -195,5 +204,40 @@ function validate()
         $('#birthdayGlyph').addClass("glyphicon-remove");
         $('#birthdayStatus').val("(fail)");
         console.log("Birthdate bad");
+        validForm = false;
     }
+
+    if (validForm)
+    {
+        var url = "/api/name_list_edit";
+        var dataToServer = { first : f1, last : f2,
+        phone : f3, email : f4, birthday : f5};
+        console.log(dataToServer);
+
+        $.ajax(
+        {
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(dataToServer),
+            success: function(dataFromServer) {
+                console.log(dataFromServer);
+                $('#datatable').remove();
+                updateTable()
+            },
+            contentType: "application/json",
+            dataType: 'text' // Could be JSON or whatever too
+        });
+
+        Dropzone.options.myDropzone =
+            {
+                init: function()
+                {
+                    this.on("success", function (file, response) {
+                        console.log(response);
+                    });
+                }
+            }
+    }
+
+    else console.log("Not all fields are valid");
 }

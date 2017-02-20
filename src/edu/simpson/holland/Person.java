@@ -12,7 +12,7 @@ public class Person
     private String last;
     private String phone;
     private String email;
-    private Date birthday;
+    private String birthday;
 
     public int getId() {return id; }
     public void setId(int id) { this.id = id; }
@@ -29,6 +29,6 @@ public class Person
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
 
-    public Date geBirthday() {return birthday;}
-    public void setBirthday(Date birthday) {this.birthday = birthday;}
+    public String getBirthday() {return birthday;}
+    public void setBirthday(String birthday) {this.birthday = birthday;}
 }

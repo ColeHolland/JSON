@@ -66,7 +66,7 @@ public class PersonDAO
                 person.setLast(rs.getString("last"));
                 person.setPhone(rs.getString("phone"));
                 person.setEmail(rs.getString("email"));
-                person.setBirthday(rs.getDate("birthday"));
+                person.setBirthday(rs.getString("birthday"));
 
                 // Add this person to the list so we can return it.
                 list.add(person);
@@ -85,6 +85,38 @@ public class PersonDAO
         return list;
     }
 
+    public static void editPerson(Person person)
+    {
+        Connection conn = null;
+        PreparedStatement stmt = null;
 
+        try
+        {
+            conn = DBHelper.getConnection();
+
+            String sql = "INSERT INTO person(FIRST, LAST, phone, email, birthday ) VALUES (?, ?, ?, ?, ?)";
+
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, person.getFirst());
+            stmt.setString(2, person.getLast());
+            stmt.setString(3, person.getPhone());
+            stmt.setString(4, person.getEmail());
+            stmt.setString(5, person.getBirthday());
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { stmt.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+            try { conn.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+    }
 
 }
