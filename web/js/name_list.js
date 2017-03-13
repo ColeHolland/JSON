@@ -2,7 +2,7 @@
 
 function my_callback(json_result)
 {
-	$("#datatable")[0].rows[1].remove();
+	//$("#datatable")[0].rows[1].remove();
 
 	for (var i = 0; i < json_result.length; i++) 
 	{
@@ -15,8 +15,11 @@ function my_callback(json_result)
             	"<td>"+json_result[i].id+"</td>"+
             	"<td>"+goodPhone+"</td>"+
             	"<td>"+json_result[i].email+"</td>"+
-            	"<td>"+json_result[i].birthday+"</td></tr>");
+            	"<td>"+json_result[i].birthday+"</td>" +
+                "<td><button type='button' name='delete' class='deleteButtons btn' value='" + json_result[i].id + "'>Delete</button></td></tr>");
     }
+
+    $('.deleteButtons').on("click", deleteItem);
 }
 
 function updateTable() 
@@ -24,7 +27,6 @@ function updateTable()
 	var url = "api/name_list_get";
 	$.getJSON(url, null, my_callback);
 }
-
 
 updateTable();
 
@@ -80,6 +82,27 @@ function saveChanges()
 {
     validate();
     console.log("Changes saved.");
+    $('#myModal').modal('hide');
+}
+
+function deleteItem(e)
+{
+    console.debug("Delete");
+    console.debug(e.target.value);
+    var url = "/api/name_list_delete";
+    var dataToServer = {id : e.target.value};
+    console.log(dataToServer);
+
+    $.post(
+        url,
+        dataToServer,
+        function(dataFromServer)
+        {
+            console.log(dataFromServer);
+            $('#datatable').empty();
+            updateTable();
+        }
+    );
 }
 
 function validate()
@@ -207,6 +230,8 @@ function validate()
         validForm = false;
     }
 
+    validForm = true;
+
     if (validForm)
     {
         var url = "/api/name_list_edit";
@@ -214,29 +239,27 @@ function validate()
         phone : f3, email : f4, birthday : f5};
         console.log(dataToServer);
 
-        $.ajax(
-        {
-            type: 'POST',
-            url: url,
-            data: JSON.stringify(dataToServer),
-            success: function(dataFromServer) {
+        $.post(
+
+            url,
+            dataToServer,
+            function(dataFromServer)
+            {
                 console.log(dataFromServer);
-                $('#datatable').remove();
-                updateTable()
-            },
-            contentType: "application/json",
-            dataType: 'text' // Could be JSON or whatever too
-        });
+                $('#datatable').empty();
+                updateTable();
+            }
+        );
 
         Dropzone.options.myDropzone =
+        {
+            init: function()
             {
-                init: function()
-                {
-                    this.on("success", function (file, response) {
-                        console.log(response);
-                    });
-                }
+                this.on("success", function (file, response) {
+                    console.log(response);
+                });
             }
+        }
     }
 
     else console.log("Not all fields are valid");
