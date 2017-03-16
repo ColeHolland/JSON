@@ -16,9 +16,11 @@ function my_callback(json_result)
             	"<td>"+goodPhone+"</td>"+
             	"<td>"+json_result[i].email+"</td>"+
             	"<td>"+json_result[i].birthday+"</td>" +
+                "<td><button type='button' name='edit' class='editButtons btn' value='" + json_result[i].id + "'>Edit</button></td>" +
                 "<td><button type='button' name='delete' class='deleteButtons btn' value='" + json_result[i].id + "'>Delete</button></td></tr>");
     }
 
+    $('.editButtons').on("click", editItem);
     $('.deleteButtons').on("click", deleteItem);
 }
 
@@ -36,6 +38,8 @@ addItemButton.on("click", showDialogAdd);
 function showDialogAdd()
 {
 	console.log("opening add item dialog");
+
+	$('#id').val("");
 
 	$('#firstNameDiv').removeClass("has-success");
     $('#firstNameDiv').removeClass("has-error");
@@ -98,11 +102,43 @@ function deleteItem(e)
         dataToServer,
         function(dataFromServer)
         {
-            console.log(dataFromServer);
             $('#datatable').empty();
             updateTable();
         }
     );
+}
+
+function editItem(e)
+{
+    console.debug("Edit");
+    console.debug(e.target.value);
+
+    var id = e.target.value;
+    var firstName = e.target.parentNode.parentNode.querySelectorAll("td")[0].innerHTML;
+    var lastName = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML;
+    var phone = e.target.parentNode.parentNode.querySelectorAll("td")[3].innerHTML;
+    var email = e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML;
+    var birthday = e.target.parentNode.parentNode.querySelectorAll("td")[5].innerHTML;
+
+    $('#id').val(id);
+    $('#firstName').val(firstName);
+    $('#lastName').val(lastName);
+    $('#phone').val(phone);
+    $('#email').val(email);
+    $('#birthday').val(birthday);
+
+    $('#firstNameDiv').removeClass("has-success");
+    $('#firstNameGlyph').removeClass("glyphicon-ok");
+    $('#lastNameDiv').removeClass("has-success");
+    $('#lastNameGlyph').removeClass("glyphicon-ok");
+    $('#phoneDiv').removeClass("has-success");
+    $('#phoneGlyph').removeClass("glyphicon-ok");
+    $('#emailDiv').removeClass("has-success");
+    $('#emailGlyph').removeClass("glyphicon-ok");
+    $('#birthdayDiv').removeClass("has-success");
+    $('#birthdayGlyph').removeClass("glyphicon-ok");
+
+    $('#myModal').modal('show');
 }
 
 function validate()
@@ -121,6 +157,8 @@ function validate()
 
     var f5 = $('#birthday').val();
     var birthday = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/;
+
+    var f6 = $('#id').val();
 
     var validForm = true;
 
@@ -235,7 +273,7 @@ function validate()
     if (validForm)
     {
         var url = "/api/name_list_edit";
-        var dataToServer = { first : f1, last : f2,
+        var dataToServer = { id : f6, first : f1, last : f2,
         phone : f3, email : f4, birthday : f5};
         console.log(dataToServer);
 
@@ -250,16 +288,6 @@ function validate()
                 updateTable();
             }
         );
-
-        Dropzone.options.myDropzone =
-        {
-            init: function()
-            {
-                this.on("success", function (file, response) {
-                    console.log(response);
-                });
-            }
-        }
     }
 
     else console.log("Not all fields are valid");

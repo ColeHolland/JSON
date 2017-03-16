@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.StringJoiner;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.io.PrintWriter;
@@ -48,7 +49,58 @@ public class NameListEdit extends HttpServlet
         Matcher f4 = emailValidPattern.matcher(email);
         Matcher f5 = birthdayValidPattern.matcher(birthday);
 
-        if (f1.find() && f2.find() && f3.find() && f4.find() && f5.find())
+        String id = request.getParameter("id");
+
+        if (id.equals(""))
+        {
+            boolean valid = true;
+
+            if (!f1.find())
+            {
+                valid = false;
+                out.println("BAD FIRST");
+            }
+
+            if (!f2.find())
+            {
+                valid = false;
+                out.println("BAD LAST");
+            }
+
+            if (!f3.find())
+            {
+                valid = false;
+                out.println("BAD PHONE");
+            }
+
+            if (!f4.find())
+            {
+                valid = false;
+                out.println("BAD EMAIL");
+            }
+
+            if (!f5.find())
+            {
+                valid = false;
+                out.println("BAD BIRTH");
+            }
+
+            if (valid)
+            {
+                Person person = new Person();
+                person.setFirst(firstName);
+                person.setLast(lastName);
+                person.setPhone(phone);
+                person.setEmail(email);
+                person.setBirthday(birthday);
+                PersonDAO.editPerson(person);
+                out.println("Passed Validation");
+            }
+
+            else out.println("Did not pass validation!");
+        }
+
+        else
         {
             Person person = new Person();
             person.setFirst(firstName);
@@ -56,11 +108,10 @@ public class NameListEdit extends HttpServlet
             person.setPhone(phone);
             person.setEmail(email);
             person.setBirthday(birthday);
-            PersonDAO.editPerson(person);
-            out.println("Passed Validation");
+            person.setId(Integer.parseInt(id));
+            PersonDAO.updatePerson(person);
+            out.println("Update Successful");
         }
-
-        else out.println("Did not pass validation");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
