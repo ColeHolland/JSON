@@ -110,9 +110,6 @@ function deleteItem(e)
 
 function editItem(e)
 {
-    console.debug("Edit");
-    console.debug(e.target.value);
-
     var id = e.target.value;
     var firstName = e.target.parentNode.parentNode.querySelectorAll("td")[0].innerHTML;
     var lastName = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML;
@@ -275,7 +272,6 @@ function validate()
         var url = "/api/name_list_edit";
         var dataToServer = { id : f6, first : f1, last : f2,
         phone : f3, email : f4, birthday : f5};
-        console.log(dataToServer);
 
         $.post(
 
@@ -283,7 +279,6 @@ function validate()
             dataToServer,
             function(dataFromServer)
             {
-                console.log(dataFromServer);
                 $('#datatable').empty();
                 updateTable();
             }
