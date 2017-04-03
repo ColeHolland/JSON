@@ -25,7 +25,7 @@
             </button>
 
             <!-- Tittle on nav bar -->
-            <a class="nabar-brand" href="#">CIS 320</a>
+            <a class="navbar-brand" href="#">CIS 320</a>
         </div>
 
         <div id="navbar" class="collapse navbar-collapsed">
@@ -34,20 +34,33 @@
                 <li><a href="Enter and Edit data.html">Name List</a></li>
                 <li><a href="Cookie Demo.html">Cookies</a></li>
                 <li><a href="Local Storage.html">Local Storage</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li class="active"><a href="login.html">Login</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <h1>Login</h1>
-    <h2>Set Login</h2>
+    <h1>Login Demo</h1>
+    <h2>Login</h2>
 
     <div>
-        <input type="text" id="loginKey" placeholder="Login Key">
-        <input type="text" id="loginValue" placeholder="Login Value">
+        <input type="text" id="loginID" placeholder="User ID">
     </div>
+    <label for="Login">Login</label>
+    <button id="Login">Go</button><br />
+
+    <h2>Log Out</h2>
+    <button id="LogOut">Log Out</button>
+
+    <h2 id="hideMessage">Welcome!</h2>
+
+    <pre id="getLoginResult"></pre><br />
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="js/login.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>

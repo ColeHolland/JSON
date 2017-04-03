@@ -32,4 +32,34 @@
         <servlet-name>NameListDelete</servlet-name>
         <url-pattern>/api/name_list_delete</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetLogin</servlet-name>
+        <servlet-class>edu.simpson.holland.GetLogin</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetLogin</servlet-name>
+        <url-pattern>/api/get_login_servlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>edu.simpson.holland.Login</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/api/login_servlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>edu.simpson.holland.LogOut</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/api/logout_servlet</url-pattern>
+    </servlet-mapping>
 </web-app>
